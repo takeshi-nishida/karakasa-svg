@@ -1,0 +1,14 @@
+{
+  "compileOnSave": true,
+
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es5",
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": true
+  },
+
+  "files": ["app.ts"]
+}

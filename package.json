@@ -1,0 +1,15 @@
+{
+  "name": "karakasa-svg",
+  "description": "",
+  "version": "0.0.1",
+  "author": "Takeshi Nishida",
+  "license": "MIT",
+
+  "main": "lib/karakasa.js",
+  "typings": "lib/karakasa.d.ts",
+  "files": [ "README.md", "package.json", "lib/" ],
+
+  "scripts": {
+    "test": "webpack"
+  }
+}

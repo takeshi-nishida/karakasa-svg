@@ -1,0 +1,6 @@
+lib/
+.vs/
+bin/
+obj/
+*.njsproj
+*.sln
