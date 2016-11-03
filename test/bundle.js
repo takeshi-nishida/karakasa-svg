@@ -46,17 +46,28 @@
 
 	"use strict";
 	var karakasa_1 = __webpack_require__(1);
-	var keyakizakaNames = ["平手 友梨奈", "小池 美波", "原田 葵", "佐藤 詩織", "菅井 友香", "斎藤 冬優花", "石森 虹花",
-	    "渡邉 理佐", "上村 莉菜", "尾関 梨香", "織田 奈那", "渡辺 梨加", "土生 瑞穂", "今泉 佑唯",
-	    "鈴本 美愉", "守屋 茜", "長濱 ねる", "志田 愛佳", "長沢 菜々香", "小林 由依", "米谷 奈々未"];
-	var messages = ["欅坂46", "革命、", "お待たせ"];
+	var names = ["西田 健志", "西田 健志", "西田 健志", "西田 健志", "西田 健志", "西田 健志", "西田 健志", "西田 健志"];
+	var messages = ["消極性", "デザイン", "宣言"];
 	window.onload = function () {
-	    var content = document.getElementById('content');
-	    var svg = karakasa_1.createKarakasaElement(keyakizakaNames, 8, messages, 12, 280, 280);
-	    content.appendChild(svg);
-	    svg = karakasa_1.createKarakasaElement(keyakizakaNames, 12, messages, 32, 400, 400);
+	    var examples = document.getElementById('examples');
+	    var h2 = document.createElement("h2");
+	    h2.textContent = "Names only";
+	    var pre = document.createElement("pre");
+	    pre.textContent = "createKarakasaElement(200, 200, names, 14)";
+	    var svg = karakasa_1.createKarakasaElement(200, 200, names, 14);
+	    examples.appendChild(h2);
+	    examples.appendChild(pre);
+	    examples.appendChild(svg);
+	    h2 = document.createElement("h2");
+	    h2.textContent = "With a message inside (and another with CSS rotate animation)";
+	    pre.textContent = "createKarakasaElement(320, 320, names, 14, messages, 24)";
+	    svg = karakasa_1.createKarakasaElement(320, 320, names, 14, messages, 24);
+	    examples.appendChild(h2);
+	    examples.appendChild(pre);
+	    examples.appendChild(svg);
+	    svg = karakasa_1.createKarakasaElement(320, 320, names, 14, messages, 24);
 	    svg.setAttribute("class", "karakasa");
-	    content.appendChild(svg);
+	    examples.appendChild(svg);
 	};
 
 
@@ -66,38 +77,43 @@
 
 	"use strict";
 	var ns = "http://www.w3.org/2000/svg";
-	function createKarakasaElement(names, nameSize, messages, messageSize, width, height) {
+	function createKarakasaElement(width, height, names, nameSize, messages, messageSize) {
+	    var cx = width / 2;
+	    var cy = height / 2;
+	    var r = Math.min(cx, cy) * 0.98;
+	    var r1 = names.length * nameSize / Math.PI;
+	    var g;
 	    var svg = document.createElementNS(ns, "svg");
 	    svg.setAttributeNS(null, 'version', '1.1');
 	    svg.setAttribute("xmlns", ns);
 	    svg.setAttribute("viewBox", "0 0 " + width + " " + height);
 	    svg.setAttribute("width", width.toString());
 	    svg.setAttribute("height", height.toString());
-	    var cx = width / 2;
-	    var cy = height / 2;
-	    var r = Math.min(cx, cy);
-	    var maxMessageLength = Math.max.apply(null, messages.map(function (m, i, a) { return m.length; }));
-	    var r1 = Math.max(names.length * nameSize / Math.PI, maxMessageLength * messageSize * Math.SQRT1_2);
-	    var hbox = r1 * Math.SQRT2;
-	    var dh = hbox / messages.length;
-	    var g = document.createElementNS(ns, "g");
-	    g.setAttribute("font-size", messageSize.toString());
-	    svg.appendChild(g);
-	    for (var i = 0; i < messages.length; i++) {
-	        var mText = document.createElementNS(ns, "text");
-	        mText.textContent = messages[i];
-	        mText.setAttribute("x", cx.toString());
-	        mText.setAttribute("y", (cy - hbox / 2 + dh * 0.5 + dh * i).toString());
-	        mText.setAttribute("text-anchor", "middle");
-	        g.appendChild(mText);
+	    if (messages && messages.length > 0) {
+	        g = document.createElementNS(ns, "g");
+	        g.setAttribute("font-family", "serif");
+	        g.setAttribute("font-size", messageSize.toString());
+	        svg.appendChild(g);
+	        r1 = Math.max(r1, Math.max.apply(null, messages.map(function (m, i, a) { return m.length; })) * messageSize * Math.SQRT1_2);
+	        var hbox = r1 * Math.SQRT2;
+	        var dh = hbox / messages.length;
+	        for (var i = 0; i < messages.length; i++) {
+	            var mText = document.createElementNS(ns, "text");
+	            mText.textContent = messages[i];
+	            mText.setAttribute("x", cx.toString());
+	            mText.setAttribute("y", (cy - hbox / 2 + dh * 0.5 + dh * i).toString());
+	            mText.setAttribute("text-anchor", "middle");
+	            g.appendChild(mText);
+	        }
 	    }
 	    g = document.createElementNS(ns, "g");
 	    g.setAttribute("font-size", nameSize.toString());
+	    g.setAttribute("font-family", "serif");
 	    svg.appendChild(g);
 	    for (var i = 0; i < names.length; i++) {
 	        var text = document.createElementNS(ns, "text");
 	        var name_1 = names[i];
-	        var nwhite = names[i].match(/\s/g).length;
+	        var nwhite = countWhiteSpace(names[i]);
 	        var ch = (r - r1 - nameSize * nwhite) / (name_1.length - nwhite);
 	        var ys = [];
 	        for (var j = 0, y = cy + r1; j < name_1.length; j++) {
@@ -114,6 +130,10 @@
 	    return svg;
 	}
 	exports.createKarakasaElement = createKarakasaElement;
+	function countWhiteSpace(s) {
+	    var m = s.match(/\s/g);
+	    return m ? m.length : 0;
+	}
 	//# sourceMappingURL=karakasa.js.map
 
 /***/ }

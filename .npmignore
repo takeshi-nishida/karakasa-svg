@@ -1,0 +1,8 @@
+.vs/
+bin/
+obj/
+src/
+test/
+karakasa-svg.njsproj
+karakasa-svg.sln
+webpack.config.js

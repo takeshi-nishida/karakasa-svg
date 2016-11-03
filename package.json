@@ -1,9 +1,15 @@
 {
   "name": "karakasa-svg",
-  "description": "",
-  "version": "0.0.1",
+  "description": "Create Karakasa-renpanjo (= round-robin signature in English) SVG element from string array.",
+  "version": "0.1.0",
   "author": "Takeshi Nishida",
   "license": "MIT",
+  "homepage": "https://github.com/takeshi-nishida/karakasa-svg",
+
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/takeshi-nishida/karakasa-svg.git"
+  },
 
   "main": "lib/karakasa.js",
   "typings": "lib/karakasa.d.ts",
